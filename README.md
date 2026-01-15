@@ -1,11 +1,4 @@
-Good decision. This is **exactly** the right moment to lock the README before more code drifts your thinking.
 
-Below is a **judge-friendly, production-grade README outline**, written in **GitHub README.md format**.
-You can copy-paste this directly and then fill sections gradually.
-
-I’m not sugarcoating: if you follow this structure well, you’ll already be ahead of most teams.
-
----
 
 ```markdown
 # Intelligent Document AI for Invoice Field Extraction  
