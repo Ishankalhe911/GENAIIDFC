@@ -263,7 +263,5 @@ The emphasis on deterministic logic, validation, and confidence makes it suitabl
 
 ---
 
-```
 
----
 
