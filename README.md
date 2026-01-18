@@ -53,7 +53,7 @@ Key principles:
 
 ## 4. High-Level Architecture
 
-'''
+```
 
 PDF Input
 └── Image Conversion
@@ -71,7 +71,7 @@ PDF Input
 ↓
 Structured JSON Output
 
-'''
+```
 
 ---
 
@@ -148,11 +148,11 @@ Each field receives an independent confidence score based on:
 - Consensus strength
 
 **Document-level confidence** is computed as:
-'''
+```
 
 min(field confidences)
 
-'''
+```
 
 This aligns with document-level accuracy evaluation and ensures conservative risk estimation.
 
@@ -160,7 +160,8 @@ This aligns with document-level accuracy evaluation and ensures conservative ris
 
 ## 9. Output JSON Schema (Guaranteed Contract)
 
-```json
+```
+json
 {
   "doc_id": "invoice_001",
   "fields": {
@@ -175,7 +176,7 @@ This aligns with document-level accuracy evaluation and ensures conservative ris
   "processing_time_sec": 3.8,
   "cost_estimate_usd": 0.002
 }
-
+```
 
 Schema is **never violated**, even under extraction failure.
 
@@ -222,8 +223,8 @@ Trade-offs between accuracy and cost are explicitly documented.
 ---
 
 ## 13. How to Run
-
-```bash
+bash
+```
 pip install -r requirements.txt
 python executable.py --input <pdf_path> --output result.json
 ```
