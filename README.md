@@ -160,8 +160,7 @@ This aligns with document-level accuracy evaluation and ensures conservative ris
 
 ## 9. Output JSON Schema (Guaranteed Contract)
 
-```
-json
+```json
 {
   "doc_id": "invoice_001",
   "fields": {
@@ -169,14 +168,20 @@ json
     "model_name": "Mahindra 575 DI",
     "horse_power": 50,
     "asset_cost": 525000,
-    "signature": { "present": true, "bbox": [100, 200, 300, 250] },
-    "stamp": { "present": false, "bbox": null }
+    "signature": {
+      "present": true,
+      "bbox": [100, 200, 300, 250]
+    },
+    "stamp": {
+      "present": false,
+      "bbox": null
+    }
   },
   "confidence": 0.96,
   "processing_time_sec": 3.8,
   "cost_estimate_usd": 0.002
 }
-```
+
 
 Schema is **never violated**, even under extraction failure.
 
