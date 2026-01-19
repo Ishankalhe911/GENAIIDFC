@@ -1,0 +1,18 @@
+# Core
+numpy
+pillow
+opencv-python
+
+# PDF handling
+pdf2image
+
+# OCR
+paddleocr
+paddlepaddle
+
+# Text matching
+rapidfuzz
+
+# Utilities
+pyyaml
+tqdm
