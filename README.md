@@ -1,6 +1,3 @@
-
-
-```markdown
 # Intelligent Document AI for Invoice Field Extraction  
 **IDFC – GenAI Hackathon (Convolve 4.0)**
 
