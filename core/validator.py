@@ -1,80 +1,52 @@
-from typing import List, Dict, Optional
+from typing import Dict, Any
+from output.schema import OUTPUT_SCHEMA
 
 
-class ConfidenceScorer:
+class  OutputValidator:
     """
-    Computes field-level and document-level confidence scores.
-    All confidence values are normalized between 0.0 and 1.0.
+    Ensures output JSON strictly follows schema.py.
+    Never allows missing keys or datatype drift.
     """
 
-    # -------- Text Fields -------- #
+    def __init__(self):
+        self.schema = OUTPUT_SCHEMA
 
-    def dealer_name_confidence(
-        self,
-        fuzzy_score: float,
-        region: Optional[str] = None
-    ) -> float:
+    def _validate_field(self, key: str, value: Any, default: Any):
         """
-        Confidence based on fuzzy match score and layout region.
+        If value is None or invalid, fallback to schema default.
         """
-        score = fuzzy_score
+        if value is None:
+            return default
 
-        if region == "header":
-            score += 0.05
+        expected_type = type(default)
 
-        return round(min(score, 1.0), 2)
+        # Special case for nested dicts (signature, stamp)
+        if isinstance(default, dict):
+            if not isinstance(value, dict):
+                return default
 
-    def exact_text_confidence(self, matched: bool) -> float:
+            validated = {}
+            for sub_key, sub_default in default.items():
+                validated[sub_key] = value.get(sub_key, sub_default)
+            return validated
+
+        # Type mismatch
+        if not isinstance(value, expected_type):
+            return default
+
+        return value
+
+    def validate(self, raw_output: Dict) -> Dict:
         """
-        For exact matches like Model Name.
+        Validate and sanitize final output.
         """
-        return 1.0 if matched else 0.0
+        validated = {}
 
-    # -------- Numeric Fields -------- #
+        for key, default_val in self.schema.items():
+            validated[key] = self._validate_field(
+                key,
+                raw_output.get(key),
+                default_val
+            )
 
-    def numeric_confidence(
-        self,
-        exact_match: bool,
-        sanity_check_passed: bool = True
-    ) -> float:
-        """
-        Numeric confidence (Horse Power, Asset Cost).
-        """
-        if exact_match and sanity_check_passed:
-            return 1.0
-        if exact_match:
-            return 0.85
-        return 0.6
-
-    # -------- Presence Fields -------- #
-
-    def presence_confidence(
-        self,
-        present: bool,
-        iou: Optional[float] = None
-    ) -> float:
-        """
-        Confidence for signature/stamp detection.
-        """
-        # If absent, and we are sure it's absent
-        if not present:
-            return 1.0
-
-        # Present but IoU known
-        if iou is not None:
-            return round(min(0.5 + iou / 2, 1.0), 2)
-
-        # Present but no IoU (fallback)
-        return 0.7
-
-    # -------- Aggregation -------- #
-
-    def document_confidence(self, field_confidences: List[float]) -> float:
-        """
-        Conservative aggregation strategy:
-        document confidence = minimum field confidence
-        """
-        if not field_confidences:
-            return 0.0
-
-        return round(min(field_confidences), 2)
+        return validated
