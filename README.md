@@ -179,7 +179,7 @@ This aligns with document-level accuracy evaluation and ensures conservative ris
   "cost_estimate_usd": 0.002
 }
 
-
+```
 Schema is **never violated**, even under extraction failure.
 
 ---
