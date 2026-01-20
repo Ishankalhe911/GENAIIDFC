@@ -42,7 +42,7 @@ class OCREngine:
             image = cv2.imread(image_path)
             height, width = image.shape[:2]
 
-            result = self.ocr.ocr(image_path, cls=True)
+            result = self.ocr.ocr(image_path )
 
             blocks = []
 
